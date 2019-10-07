@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    user: $UID
+    build:
+      context: docker/app/
+      dockerfile: Dockerfile
+      args:
+        UID: $UID
+    container_name: picshare-app
+    ports:
+      - "8000:8000"
+    tty: true
+    volumes:
+      - ./src:/var/www/app
+
+  nginx:
+    image: nginx:alpine
+    container_name: picshare-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    tty: true
+    depends_on:
+      - app
+    volumes:
+      - ./src/public:/var/www/app/public
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./data/nginx/log:/var/log/nginx
