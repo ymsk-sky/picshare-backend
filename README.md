@@ -28,6 +28,12 @@ export UID=${UID}
 cp src/.env.example src/.env
 ```
 
+アプリケーションキーを生成
+
+```
+docker-compose exec app php artisan key:generate
+```
+
 コンテナを起動
 
 ```
